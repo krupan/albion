@@ -45,10 +45,10 @@ fi
 
 echo "purging environment, check that PURGEENV_TEST is not set when done"
 
-if [ ! -e "purgeenv.py" ]; then
-    echo "FAIL: purgeenv.py not found"
-elif [ -x "purgeenv.py" ]; then
-    eval `./purgeenv.py`
+if [ ! -e "albion.py" ]; then
+    echo "FAIL: albion.py not found"
+elif [ -x "albion.py" ]; then
+    eval `./albion.py unload`
 else
     echo "FAIL: purgenenv.py not executable"
 fi
