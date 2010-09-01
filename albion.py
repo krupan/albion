@@ -3,7 +3,7 @@
 import os
 import sys
 
-keepers = ['_', 'TERM', 'SHELL', 'SSH_TTY', 'USER', 'HOME', 'SSH_CLIENT', 'SSH_CONNECTION',]
+keepers = ['_', 'TERM', 'SHELL', 'SSH_TTY', 'USER', 'HOME', 'SSH_CLIENT', 'SSH_CONNECTION', 'DISPLAY', ]
 
 def usage():
     print >>sys.stderr, 'Usage:'
