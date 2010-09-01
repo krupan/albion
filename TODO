@@ -1,0 +1,4 @@
+* KEEPERS env variable (need a name for this tool to prepend to it)
+   where a user can list their own env vars that purgenev won't unset
+
+* work out workflow of loading and unloading envs and configs

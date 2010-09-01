@@ -1,0 +1,28 @@
+Strive to work with any POSIX shell:
+
+http://www.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html
+
+This means bash, korn shell, and zshell should all work.  Non-POSIX shells like csh and tcsh very likely won't.
+
+Does require Python.
+
+loads and unloads configs
+
+should there be staging of configs for future loading?  might be a premature optimization.
+
+configs can issue albion commands to load other configs, but, should there be a notion of something that is a collection of configs?  maybe that's an environment.  an environment is made up of configurations?  I kind of like that.  Hmm, you can load multiple configs, can you load multiple environments?  I think maybe not.
+
+should there be roles?  (they could be used in an environment to conditionally load certain configs for people with different roles)  they could be added later, I think.
+
+load a config:  source a config file, record what has been sourced
+load an env: source an env file, which will likely have load config commands, record env that is loaded.
+unload a config: remove config from list of loaded configs, purgeenv and reload env
+load an env: replace recorded env with this new one, purgeenv and reload env
+
+Variables:
+ALBION_CONFIG_PATH: like PATH, a list of paths to albion config files
+ALBION_ENV_PATH: like PATH, a list of paths to albion environment files
+ALBION_ENV: currently loaded env
+ALBION_CONFIGS: list of currently loaded configs
+
+will we replace .profile and shell rc files, or source something at the top of them that loads albion stuff?
