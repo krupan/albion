@@ -20,13 +20,25 @@ def unload():
     print >>sys.stderr, "this is unload"
     purgeenv()
 
+def list_envs():
+    """output of this should not be evaled"""
+    path_var = 'ALBION_ENV_PATH'
+    if path_var not in os.environ:
+        print path_var + ' is not set'
+        sys.exit(-1)
+    for envdir in os.environ[path_var].split(':'):
+        for env in os.listdir( envdir ):
+            print env
+
 def purgeenv():
+    """output of this should be evaled"""
     for key in os.environ:
         if key not in keepers:
             print 'unset ' + key + ';'
     print 'exec ' + os.environ['SHELL'] + ' --login'
 
-commands = { 'lo': load,
+commands = { 'list_envs': list_envs,
+             'lo': load,
              'loa': load,
              'load': load,
              'un': unload,

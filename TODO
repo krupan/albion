@@ -2,3 +2,13 @@
    where a user can list their own env vars that purgenev won't unset
 
 * work out workflow of loading and unloading envs and configs
+
+* eval or not eval:  some of the albion commands will output strings
+   that need to be fed to eval, some of the albion commands will just
+   print informational strings.  How to work this?
+
+* list_envs command should be list envs (so that other lists will
+   work, like list configs, or list loaded envs, and stuff like that.
+
+* list commands will need to format output in nice columns when the
+   list is long.
