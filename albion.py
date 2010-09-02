@@ -25,7 +25,6 @@ def check_path( path_var ):
 
 def load( args ):
     """output of this should be evaled"""
-    # REVISIT: update configs_loaded
     config = args[0]
     version = args[1]
     check_path( configs_path_var )
@@ -48,10 +47,12 @@ def load( args ):
         print >>sys.stderr, 'ERROR: config %s not found' % config
         sys.exit(-1)
     if not found_config_version:
-        print >>sys.stderr, 'ERROR: configs for %s found, but version %s not found' % \
-            (config, version)
+        print >>sys.stderr, 'ERROR: configs for %s found, but version ' \
+            '%s not found' % (config, version)
         sys.exit(-1)
-    print ". %s" % config_full_path
+    print ". %s;" % config_full_path
+    print 'export %s="$%s:%s+%s"' % (
+        configs_loaded_var, configs_loaded_var, config, version )
 
 def unload( args ):
     purgeenv()
