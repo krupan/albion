@@ -8,18 +8,18 @@ fi
 
 output=`./albion.py list_envs`
 
-if [ "$output" = "ALBION_ENV_PATH is not set" ]; then
-    echo "WIN: ALBION_ENV_PATH not set"
-    export ALBION_ENV_PATH=/opt/albion-stuff/envs/
+if [ "$output" = "ALBION_ENVS_PATH is not set" ]; then
+    echo "WIN: ALBION_ENVS_PATH not set"
+    export ALBION_ENVS_PATH=/opt/albion-stuff/envs/
 else
-    echo "FAIL: missing error about missing ALBION_ENV_PATH"
+    echo "FAIL: missing error about missing ALBION_ENVS_PATH"
 fi
 
 output=`./albion.py list_envs`
 
 if [ "$output" = "default" ]; then
     echo "WIN: listed with one dir in path"
-    export ALBION_ENV_PATH=$ALBION_ENV_PATH:$HOME/.local_albion/envs
+    export ALBION_ENVS_PATH=$ALBION_ENVS_PATH:$HOME/.local_albion/envs
 else
     echo "FAIL: failed with one dir in path"
 fi

@@ -4,8 +4,13 @@ import os
 import sys
 
 keepers = ['_', 'TERM', 'SHELL', 'SSH_TTY', 'USER', 'HOME', 'SSH_CLIENT', 'SSH_CONNECTION', 'DISPLAY', ]
+envs_path_var = 'ALBION_ENVS_PATH'
+envs_loaded_var = 'ALBION_ENVS_LOADED'
+configs_path_var = 'ALBION_CONFIGS_PATH'
+configs_loaded_var = 'ALBION_CONFIGS_LOADED'
 
 def usage():
+    """output of this should not be evaled"""
     print >>sys.stderr, 'Usage:'
     print >>sys.stderr, '  albion command'
     print >>sys.stderr, ''
@@ -13,20 +18,48 @@ def usage():
     print >>sys.stderr, '  load'
     print >>sys.stderr, '  unload'
 
-def load():
-    print >>sys.stderr, "this is load"
-
-def unload():
-    print >>sys.stderr, "this is unload"
-    purgeenv()
-
-def list_envs():
-    """output of this should not be evaled"""
-    path_var = 'ALBION_ENV_PATH'
+def check_path( path_var ):
     if path_var not in os.environ:
         print path_var + ' is not set'
         sys.exit(-1)
-    for envdir in os.environ[path_var].split(':'):
+
+def load( args ):
+    """output of this should be evaled"""
+    # REVISIT: update configs_loaded
+    config = args[0]
+    version = args[1]
+    check_path( configs_path_var )
+    found_config = False
+    found_config_version = False
+    configs_full_path = ''
+    for configdir in os.environ[configs_path_var].split(':'):
+        if not os.path.exists( configdir + config ):
+            continue
+        # we found a config directory for requested config
+        found_config = True
+        config_full_path = configdir + config + '/' + version
+        if not os.path.isfile( config_full_path ):
+            # we didn't find the specified version of the config in
+            # this config directory
+            continue
+        found_config_version = True
+        break
+    if not found_config:
+        print >>sys.stderr, 'ERROR: config %s not found' % config
+        sys.exit(-1)
+    if not found_config_version:
+        print >>sys.stderr, 'ERROR: configs for %s found, but version %s not found' % \
+            (config, version)
+        sys.exit(-1)
+    print ". %s" % config_full_path
+
+def unload( args ):
+    purgeenv()
+
+def list_envs( args ):
+    """output of this should not be evaled"""
+    check_path( envs_path_var )
+    for envdir in os.environ[envs_path_var].split(':'):
         for env in os.listdir( envdir ):
             print env
 
@@ -53,7 +86,7 @@ def main():
         sys.exit(0)
     
     if sys.argv[1] in commands:
-        commands[sys.argv[1]]()
+        commands[sys.argv[1]](sys.argv[2:])
     else:
         print >>sys.stderr, 'there is no "%s" command' % sys.argv[1]
         sys.exit(-1)
