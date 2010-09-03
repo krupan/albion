@@ -25,6 +25,9 @@ def check_path( path_var ):
 
 def load( args ):
     """output of this should be evaled"""
+    if len( args ) < 2:
+        print >>sys.stderr, 'ERROR: not enough arguments to load'
+        sys.exit(-1)
     config = args[0]
     version = args[1]
     check_path( configs_path_var )
@@ -32,11 +35,11 @@ def load( args ):
     found_config_version = False
     configs_full_path = ''
     for configdir in os.environ[configs_path_var].split(':'):
-        if not os.path.exists( configdir + config ):
+        if not os.path.exists( configdir + '/' + config ):
             continue
         # we found a config directory for requested config
         found_config = True
-        config_full_path = configdir + config + '/' + version
+        config_full_path = configdir + '/' + config + '/' + version
         if not os.path.isfile( config_full_path ):
             # we didn't find the specified version of the config in
             # this config directory
