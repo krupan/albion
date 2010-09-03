@@ -3,11 +3,13 @@
 import os
 import sys
 
-keepers = ['_', 'TERM', 'SHELL', 'SSH_TTY', 'USER', 'HOME', 'SSH_CLIENT', 'SSH_CONNECTION', 'DISPLAY', ]
 envs_path_var = 'ALBION_ENVS_PATH'
 envs_loaded_var = 'ALBION_ENVS_LOADED'
 configs_path_var = 'ALBION_CONFIGS_PATH'
 configs_loaded_var = 'ALBION_CONFIGS_LOADED'
+keepers = ['_', 'TERM', 'SHELL', 'SSH_TTY', 'USER', 'HOME', 'SSH_CLIENT',
+           'SSH_CONNECTION', 'DISPLAY', envs_path_var, envs_loaded_var,
+           configs_path_var, configs_loaded_var, ]
 
 def usage():
     """output of this should not be evaled"""
@@ -25,6 +27,8 @@ def check_path( path_var ):
 
 def load( args ):
     """output of this should be evaled"""
+    # REVISIT: check if config is already loaded and if so, don't load
+    # it, even if version is different (assume it's a conflict)?
     if len( args ) < 2:
         print >>sys.stderr, 'ERROR: not enough arguments to load'
         sys.exit(-1)
@@ -58,6 +62,17 @@ def load( args ):
         configs_loaded_var, configs_loaded_var, config, version )
 
 def unload( args ):
+    if len( args ) < 1:
+        print >>sys.stderr, 'ERROR: not enough arguments to unload'
+        sys.exit(-1)
+    config_to_unload = args[0]
+    check_path( configs_loaded_var )
+    loaded_configs = ''
+    for loaded_config in os.environ[configs_loaded_var].split(':'):
+        if config_to_unload in loaded_config:
+            continue
+        loaded_configs += loaded_config + ':'
+    print 'export %s=%s' % ( configs_loaded_var, loaded_configs )
     purgeenv()
 
 def list_envs( args ):
@@ -72,7 +87,7 @@ def purgeenv():
     for key in os.environ:
         if key not in keepers:
             print 'unset ' + key + ';'
-    print 'exec ' + os.environ['SHELL'] + ' --login'
+    print 'exec ' + os.environ['SHELL'] + ' --login;'
 
 commands = { 'list_envs': list_envs,
              'lo': load,

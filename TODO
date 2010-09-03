@@ -1,7 +1,12 @@
 * KEEPERS env variable (need a name for this tool to prepend to it)
    where a user can list their own env vars that purgenev won't unset
 
-* work out workflow of loading and unloading envs and configs
+* work out workflow of loading and unloading envs and configs: there
+   will need to be something probably in .profile that loads all
+   the configs in ALBION_LOADED_CONFIGS.  An unload will be, remove
+   the config from ALBION_LOADED_CONFIGS, purge everything, and then
+   let the .profile rebuild, including loading configs that are in
+   ALBION_LOADED_CONFIGS.
 
 * eval or not eval:  some of the albion commands will output strings
    that need to be fed to eval, some of the albion commands will just
