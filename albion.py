@@ -109,7 +109,8 @@ def env( args ):
     if len( args ) > 1:
         print >>sys.stderr, 'ERROR: too many arguments, did you mean load?'
         sys.exit(-1)
-    find_env( args[0] )
+    env = args[0]
+    find_env( env )
     print 'export %s="%s";' % (env_var, env)
     purgeenv()
     
@@ -171,7 +172,6 @@ def main():
     if len(sys.argv) < 2:
         usage()
         sys.exit(0)
-    
     if sys.argv[1] in commands:
         commands[sys.argv[1]](sys.argv[2:])
     else:

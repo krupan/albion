@@ -1,0 +1,4 @@
+# -*- sh -*-
+mypath(){
+    echo $PATH | awk 'BEGIN{RS=":"} {print}'
+}
