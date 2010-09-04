@@ -4,15 +4,19 @@ import os
 import sys
 
 envs_path_var = 'ALBION_ENVS_PATH'
-envs_loaded_var = 'ALBION_ENVS_LOADED'
+env_var = 'ALBION_ENV'
 configs_path_var = 'ALBION_CONFIGS_PATH'
 configs_loaded_var = 'ALBION_CONFIGS_LOADED'
 keepers = ['_', 'TERM', 'SHELL', 'SSH_TTY', 'USER', 'HOME', 'SSH_CLIENT',
-           'SSH_CONNECTION', 'DISPLAY', envs_path_var, envs_loaded_var,
-           configs_path_var, configs_loaded_var, ]
+           'SSH_CONNECTION', 'DISPLAY', 'LANG', envs_path_var,
+           envs_loaded_var, configs_path_var, configs_loaded_var, ]
 
 def usage():
-    """output of this should not be evaled"""
+    """prints albion usage information
+
+    output of this should *not* be evaled
+
+    """
     print >>sys.stderr, 'Usage:'
     print >>sys.stderr, '  albion command'
     print >>sys.stderr, ''
@@ -26,9 +30,14 @@ def check_path( path_var ):
         sys.exit(-1)
 
 def load( args ):
-    """output of this should be evaled"""
-    # REVISIT: check if config is already loaded and if so, don't load
-    # it, even if version is different (assume it's a conflict)?
+    """loads a configuration
+
+    the output of this should be evaled
+
+    """
+    # REVISIT: should we check if config is already loaded and if so,
+    # don't load it, even if version is different (assume it's a
+    # conflict)?
     if len( args ) < 2:
         print >>sys.stderr, 'ERROR: not enough arguments to load'
         sys.exit(-1)
@@ -61,7 +70,21 @@ def load( args ):
     print 'export %s="$%s:%s+%s"' % (
         configs_loaded_var, configs_loaded_var, config, version )
 
+def env( args ):
+    """Loads an environment (which usually loads some configs)
+
+    output of this should be evaled
+
+    """
+    pass
+    
+
 def unload( args ):
+    """unloads a configuration
+
+    output of this should be evaled
+
+    """
     if len( args ) < 1:
         print >>sys.stderr, 'ERROR: not enough arguments to unload'
         sys.exit(-1)
@@ -76,14 +99,22 @@ def unload( args ):
     purgeenv()
 
 def list_envs( args ):
-    """output of this should not be evaled"""
+    """lists available environments
+
+    output of this should *not* be evaled
+
+    """
     check_path( envs_path_var )
     for envdir in os.environ[envs_path_var].split(':'):
         for env in os.listdir( envdir ):
-            print env
+            print >>sys.stderr, env
 
 def purgeenv():
-    """output of this should be evaled"""
+    """purges all environment variables prior to loading an environment
+
+    the output of this should be evaled
+
+    """
     for key in os.environ:
         if key not in keepers:
             print 'unset ' + key + ';'
