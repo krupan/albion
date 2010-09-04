@@ -9,7 +9,7 @@ configs_path_var = 'ALBION_CONFIGS_PATH'
 configs_loaded_var = 'ALBION_CONFIGS_LOADED'
 keepers = ['_', 'TERM', 'SHELL', 'SSH_TTY', 'USER', 'HOME', 'SSH_CLIENT',
            'SSH_CONNECTION', 'DISPLAY', 'LANG', envs_path_var,
-           envs_loaded_var, configs_path_var, configs_loaded_var, ]
+           env_var, configs_path_var, configs_loaded_var, ]
 
 def usage():
     """prints albion usage information
@@ -66,8 +66,8 @@ def load( args ):
         print >>sys.stderr, 'ERROR: configs for %s found, but version ' \
             '%s not found' % (config, version)
         sys.exit(-1)
-    print ". %s;" % config_full_path
-    print 'export %s="$%s:%s+%s"' % (
+    print '. %s;' % config_full_path
+    print 'export %s="$%s:%s+%s";' % (
         configs_loaded_var, configs_loaded_var, config, version )
 
 def env( args ):
@@ -76,9 +76,28 @@ def env( args ):
     output of this should be evaled
 
     """
-    pass
+    if len( args ) < 1:
+        print >>sys.stderr, 'ERROR: not enough arguments to env'
+        sys.exit(-1)
+    if len( args ) > 1:
+        print >>sys.stderr, 'ERROR: too many arguments, did you mean load?'
+        sys.exit(-1)
+    env = args[0]
+    check_path( envs_path_var )
+    found_env = False
+    env_full_path = ''
+    for envdir in os.environ[envs_path_var].split(':'):
+        if not os.path.exists( envdir + '/' + env ):
+            continue
+        found_env = True
+        env_full_path = envdir + '/' + env
+        break
+    if not found_env:
+        print >>sys.stderr, 'ERROR: env %s not found' % env
+        sys.exit(-1)
+    print '. %s;' % env_full_path
+    print 'export %s="%s";' % (env_var, env)
     
-
 def unload( args ):
     """unloads a configuration
 
@@ -128,7 +147,9 @@ commands = { 'list_envs': list_envs,
              'unl': unload,
              'unlo': unload,
              'unloa': unload,
-             'unload': unload, }
+             'unload': unload,
+             'env': env,
+             'environment': env, }
 
 def main():
     if len(sys.argv) < 2:
