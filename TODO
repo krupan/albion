@@ -8,9 +8,15 @@
    let the .profile rebuild, including loading configs that are in
    ALBION_LOADED_CONFIGS.
 
+* relatedly, will unload command unload a config loaded by the env?
+   If the thing in .profile just loads the env, then the answer is no,
+   if it just loads whatever is currently in ALBION_LOADED_CONFIGS,
+   then how will an env get loaded when you log in?
+
 * eval or not eval:  some of the albion commands will output strings
    that need to be fed to eval, some of the albion commands will just
-   print informational strings.  How to work this?
+   print informational strings.  How to work this?  So far I'm just
+   output non-evaled stuff to STDERR
 
 * list_envs command should be list envs (so that other lists will
    work, like list configs, or list loaded envs, and stuff like that.

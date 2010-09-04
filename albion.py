@@ -70,19 +70,7 @@ def load( args ):
     print 'export %s="$%s:%s+%s";' % (
         configs_loaded_var, configs_loaded_var, config, version )
 
-def env( args ):
-    """Loads an environment (which usually loads some configs)
-
-    output of this should be evaled
-
-    """
-    if len( args ) < 1:
-        print >>sys.stderr, 'ERROR: not enough arguments to env'
-        sys.exit(-1)
-    if len( args ) > 1:
-        print >>sys.stderr, 'ERROR: too many arguments, did you mean load?'
-        sys.exit(-1)
-    env = args[0]
+def find_env( env ):
     check_path( envs_path_var )
     found_env = False
     env_full_path = ''
@@ -95,8 +83,35 @@ def env( args ):
     if not found_env:
         print >>sys.stderr, 'ERROR: env %s not found' % env
         sys.exit(-1)
+    return env_full_path
+
+def env_load( args ):
+    """Finds an environment to load.
+
+    output of this should be evaled
+    
+    this should not be called directly by a user
+    
+    """
+    assert( len( args ) == 1 )
+    env_full_path = find_env( args[0] )
     print '. %s;' % env_full_path
+
+def env( args ):
+    """Loads an environment (which usually loads some configs)
+
+    output of this should be evaled
+
+    """
+    if len( args ) < 1:
+        print >>sys.stderr, 'ERROR: not enough arguments to env'
+        sys.exit(-1)
+    if len( args ) > 1:
+        print >>sys.stderr, 'ERROR: too many arguments, did you mean load?'
+        sys.exit(-1)
+    find_env( args[0] )
     print 'export %s="%s";' % (env_var, env)
+    purgeenv()
     
 def unload( args ):
     """unloads a configuration
@@ -149,7 +164,8 @@ commands = { 'list_envs': list_envs,
              'unloa': unload,
              'unload': unload,
              'env': env,
-             'environment': env, }
+             'environment': env,
+             'env_load': env_load, }
 
 def main():
     if len(sys.argv) < 2:

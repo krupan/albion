@@ -1,0 +1,21 @@
+# -*- sh -*-
+# sets up the albion env and loads default albion environment
+
+export ALBION_ENVS_PATH=:$HOME/.local_albion/envs:/opt/albion-stuff/envs
+export ALBION_ENV=foo
+export ALBION_CONFIGS_PATH=:$HOME/.local_albion/configs:/opt/albion-stuff/configs
+export ALBION_CONFIGS_LOADED=
+
+PATH_TO_ALBION=/home/bryan/work/env-manager
+
+albion(){
+    eval $($PATH_TO_ALBION/albion.py $*)
+}
+
+if [ -z "$ALBION_ENV" ]; then
+    echo "WARNING: no albion environment set"
+else
+    # this should not be called by user at a command prompt, but it's
+    # pretty important to call it here here:
+    albion env_load $ALBION_ENV
+fi
