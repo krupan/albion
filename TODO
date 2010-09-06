@@ -36,3 +36,5 @@
    list is long.
 
 * bash completion for envs and configs
+
+* list-configs needs to list available versions of a given config
