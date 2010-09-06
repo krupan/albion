@@ -29,14 +29,10 @@
 * eval or not eval:  some of the albion commands will output strings
    that need to be fed to eval, some of the albion commands will just
    print informational strings.  How to work this?  So far I'm just
-   output non-evaled stuff to STDERR
-
-* list_envs command should be list envs (so that other lists will
-   work, like list configs, or list loaded envs, and stuff like that.
+   output non-evaled stuff to STDERR.  Another option is to output
+   echo commands that are not a problem to eval.
 
 * list commands will need to format output in nice columns when the
    list is long.
 
-* put albion functions and aliases in .bashrc, leave environment
-   variables in .profile.  I believe this may only be a korn shell
-   thing, but we want to be as compatible as possible.
+* bash completion for envs and configs
