@@ -18,11 +18,14 @@ def usage():
 
     """
     print >>sys.stderr, 'Usage:'
+    print >>sys.stderr, ''
     print >>sys.stderr, '  albion command'
     print >>sys.stderr, ''
-    print >>sys.stderr, 'command is one of:'
-    print >>sys.stderr, '  load'
-    print >>sys.stderr, '  unload'
+    print >>sys.stderr, 'Command is one of:'
+    print >>sys.stderr, ''
+    print >>sys.stderr, '  load    load a configuration into your environment'
+    print >>sys.stderr, '  unload  unload a configuration from your environment'
+    print >>sys.stderr, '  env     set up an environment'
 
 def check_path( path_var ):
     if path_var not in os.environ:
