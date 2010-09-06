@@ -1,11 +1,14 @@
 # -*- sh -*-
-# sets up albion and loads an albion environment
+# sets up login part of albion
+#
+# source this at the top of your ~/.profile or ~/.bash_profile, before
+# shell rc (e.g., ~/.bashrc) is sourced
 
 export ALBION_ENVS_PATH="$HOME/.local_albion/envs:/opt/albion-stuff/envs:$HOME/work/env-manager/examples/envs"
 export ALBION_CONFIGS_PATH="$HOME/.local_albion/configs:/opt/albion-stuff/configs:$HOME/work/env-manager/examples/configs"
 export ALBION_CONFIGS_LOADED=""
 
-PATH_TO_ALBION="/home/bryan/work/env-manager"
+export PATH_TO_ALBION="/home/bryan/work/env-manager"
 # there's an environment named default, but it could be anything
 DEFAULT_ENV="default"
 
@@ -13,16 +16,4 @@ if [ -z "$ALBION_ENV" ]; then
     export ALBION_ENV="$DEFAULT_ENV"
 fi
 
-albion(){
-    eval $($PATH_TO_ALBION/albion.py $*)
-}
 
-alias alb="albion"
-
-if [ -z "$ALBION_ENV" ]; then
-    echo "WARNING: no albion environment set"
-else
-    # this should not be called by user at a command prompt, but it's
-    # pretty important to call it here here:
-    albion env_load $ALBION_ENV
-fi

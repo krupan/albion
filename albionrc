@@ -1,0 +1,22 @@
+# -*- sh -*-
+# sets up interactive part of albion and loads an albion environment
+#
+# source this at the end of your shell rc file (e.g., ~/.bashrc)
+
+if [ -z "$PATH_TO_ALBION" ]; then
+    echo "ERROR: no PATH_TO_ALBION"
+fi
+
+albion(){
+    eval $($PATH_TO_ALBION/albion.py $*)
+}
+
+alias alb="albion"
+
+if [ -z "$ALBION_ENV" ]; then
+    echo "WARNING: no albion environment set"
+else
+    # this should not be called by user at a command prompt, but it's
+    # pretty important to call it here here:
+    albion env_load $ALBION_ENV
+fi
