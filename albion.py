@@ -11,7 +11,7 @@ keepers = ['_', 'TERM', 'SHELL', 'SSH_TTY', 'USER', 'HOME', 'SSH_CLIENT',
            'SSH_CONNECTION', 'DISPLAY', 'LANG', envs_path_var,
            env_var, configs_path_var, configs_loaded_var, ]
 
-def usage():
+def usage( args ):
     """prints albion usage information
 
     output of this should *not* be evaled
@@ -23,9 +23,14 @@ def usage():
     print >>sys.stderr, ''
     print >>sys.stderr, 'Command is one of:'
     print >>sys.stderr, ''
-    print >>sys.stderr, '  load    load a configuration into your environment'
-    print >>sys.stderr, '  unload  unload a configuration from your environment'
-    print >>sys.stderr, '  env     set up an environment'
+    print >>sys.stderr, '  help          display this information'
+    print >>sys.stderr, '  list-envs     list all available environments'
+    print >>sys.stderr, '  list-configs  list all available configurations'
+    print >>sys.stderr, '  load          load a configuration into your ' \
+    'environment'
+    print >>sys.stderr, '  unload        unload a configuration from your' \
+    ' environment'
+    print >>sys.stderr, '  env           set up an environment'
 
 def check_path( path_var ):
     if path_var not in os.environ:
@@ -147,6 +152,9 @@ def list_envs( args ):
         for env in os.listdir( envdir ):
             print >>sys.stderr, env
 
+def list_configs( args ):
+    pass
+
 def purgeenv():
     """purges all environment variables prior to loading an environment
 
@@ -158,7 +166,12 @@ def purgeenv():
             print 'unset ' + key + ';'
     print 'exec ' + os.environ['SHELL'] + ' --login;'
 
-commands = { 'list_envs': list_envs,
+commands = { 'env': env,
+             'environment': env,
+             'env_load': env_load,
+             'help': usage,
+             'list-envs': list_envs,
+             'list-configs': list_configs,
              'lo': load,
              'loa': load,
              'load': load,
@@ -166,14 +179,11 @@ commands = { 'list_envs': list_envs,
              'unl': unload,
              'unlo': unload,
              'unloa': unload,
-             'unload': unload,
-             'env': env,
-             'environment': env,
-             'env_load': env_load, }
+             'unload': unload }
 
 def main():
     if len(sys.argv) < 2:
-        usage()
+        usage(0)
         sys.exit(0)
     if sys.argv[1] in commands:
         commands[sys.argv[1]](sys.argv[2:])
