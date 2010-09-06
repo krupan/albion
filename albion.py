@@ -229,7 +229,7 @@ def purgeenv():
     for key in os.environ:
         if key not in keepers:
             print 'unset ' + key + ';'
-    print 'exec ' + os.environ['SHELL'] + ' --login;'
+    print 'exec ' + os.environ['SHELL'] + ' -l;'
 
 commands = { 'env': env,
              'environment': env,
