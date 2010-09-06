@@ -31,6 +31,7 @@ def usage( args ):
     print >>sys.stderr, '  unload        unload a configuration from your' \
     ' environment'
     print >>sys.stderr, '  env           set up an environment'
+    print >>sys.stderr, ''
 
 def check_path( path_var ):
     if path_var not in os.environ:
@@ -141,19 +142,28 @@ def unload( args ):
     print 'export %s=%s' % ( configs_loaded_var, loaded_configs )
     purgeenv()
 
-def list_envs( args ):
-    """lists available environments
+def list( paths_var, things ):
+    """lists available environments or configs
+
+    things is the thing you are listing, plural
 
     output of this should *not* be evaled
 
     """
-    check_path( envs_path_var )
-    for envdir in os.environ[envs_path_var].split(':'):
-        for env in os.listdir( envdir ):
-            print >>sys.stderr, env
+    check_path( paths_var )
+    print >>sys.stderr, ''
+    for path in os.environ[paths_var].split(':'):
+        print >>sys.stderr, '%s in %s:' % (things, path)
+        print >>sys.stderr, ''
+        for item in os.listdir( path ):
+            print >>sys.stderr, '  ' + item
+        print >>sys.stderr, ''
+
+def list_envs( args ):
+    list( envs_path_var, 'environments' )
 
 def list_configs( args ):
-    pass
+    list( configs_path_var, 'configurations' )
 
 def purgeenv():
     """purges all environment variables prior to loading an environment
