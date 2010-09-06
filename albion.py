@@ -237,6 +237,35 @@ def list_configs(args):
     list(configs_path_var, 'configurations')
 
 
+def which(args):
+    """report where a given named item comes from
+
+    the output of this should *not* be evaled
+
+    """
+    if len(args) < 1:
+        print >> sys.stderr, 'albion: not enough arguments to which'
+        sys.exit(-1)
+
+    # it could be a configuration, so search those:
+    check_path(configs_path_var)
+    for configdir in os.environ[configs_path_var].split(':'):
+        if not os.path.exists(configdir + '/' + args[0]):
+            continue
+        # found a config by that name:
+        print >> sys.stderr, 'configuration:'
+        print >> sys.stderr, '  ' + configdir + '/' + args[0]
+
+    # it could be an environment, so search those:
+    check_path(envs_path_var)
+    for envdir in os.environ[envs_path_var].split(':'):
+        if not os.path.exists(envdir + '/' + args[0]):
+            continue
+        # found an env by that name:
+        print >> sys.stderr, 'environment:'
+        print >> sys.stderr, '  ' + envdir + '/' + args[0]
+
+
 def purgeenv():
     """purges all environment variables prior to loading an environment
 
@@ -261,7 +290,8 @@ commands = {'env': env,
             'unl': unload,
             'unlo': unload,
             'unloa': unload,
-            'unload': unload}
+            'unload': unload,
+            'which': which}
 
 
 def main():
