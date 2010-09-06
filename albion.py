@@ -112,7 +112,7 @@ def load(args):
                 print >> sys.stderr, '%s %s' % (fields[0], fields[1])
         sys.exit(0)
     if len(args) < 2:
-        print >> sys.stderr, 'ERROR: not enough arguments to load'
+        print >> sys.stderr, 'albion: not enough arguments to load'
         sys.exit(-1)
     config = args[0]
     version = args[1]
@@ -133,10 +133,10 @@ def load(args):
         found_config_version = True
         break
     if not found_config:
-        print >> sys.stderr, 'ERROR: config %s not found' % config
+        print >> sys.stderr, 'albion: config %s not found' % config
         sys.exit(-1)
     if not found_config_version:
-        print >> sys.stderr, 'ERROR: configs for %s found, but version ' \
+        print >> sys.stderr, 'albion: configs for %s found, but version ' \
             '%s not found' % (config, version)
         sys.exit(-1)
     print '. %s;' % config_full_path
@@ -155,7 +155,7 @@ def find_env(env):
         env_full_path = envdir + '/' + env
         break
     if not found_env:
-        print >> sys.stderr, 'ERROR: env %s not found' % env
+        print >> sys.stderr, 'albion: env %s not found' % env
         sys.exit(-1)
     return env_full_path
 
@@ -183,7 +183,7 @@ def env(args):
         print >> sys.stderr, os.environ[env_var]
         sys.exit(0)
     if len(args) > 1:
-        print >> sys.stderr, 'ERROR: too many arguments, did you mean load?'
+        print >> sys.stderr, 'albion: too many arguments, did you mean load?'
         sys.exit(-1)
     env = args[0]
     find_env(env)
@@ -198,7 +198,7 @@ def unload(args):
 
     """
     if len(args) < 1:
-        print >> sys.stderr, 'ERROR: not enough arguments to unload'
+        print >> sys.stderr, 'albion: not enough arguments to unload'
         sys.exit(-1)
     config_to_unload = args[0]
     check_path(configs_loaded_var)
