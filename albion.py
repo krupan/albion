@@ -66,7 +66,8 @@ def usage( args ):
     'environment'
     print >>sys.stderr, '  unload        unload a configuration from your' \
     ' environment'
-    print >>sys.stderr, '  env           set up an environment'
+    print >>sys.stderr, '  env           set up an environment; with no' \
+        ' args, list current environment'
     print >>sys.stderr, ''
 
 def check_path( path_var ):
@@ -149,8 +150,8 @@ def env( args ):
 
     """
     if len( args ) < 1:
-        print >>sys.stderr, 'ERROR: not enough arguments to env'
-        sys.exit(-1)
+        print >>sys.stderr, os.environ[env_var]
+        sys.exit(0)
     if len( args ) > 1:
         print >>sys.stderr, 'ERROR: too many arguments, did you mean load?'
         sys.exit(-1)
