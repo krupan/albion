@@ -7,9 +7,21 @@ envs_path_var = 'ALBION_ENVS_PATH'
 env_var = 'ALBION_ENV'
 configs_path_var = 'ALBION_CONFIGS_PATH'
 configs_loaded_var = 'ALBION_CONFIGS_LOADED'
-keepers = ['_', 'TERM', 'SHELL', 'SSH_TTY', 'USER', 'HOME', 'SSH_CLIENT',
-           'SSH_CONNECTION', 'DISPLAY', 'LANG', envs_path_var,
-           env_var, configs_path_var, configs_loaded_var, ]
+keepers = ['DISPLAY',
+           'HOME',
+           'LANG',
+           'LOGNAME',
+           'SHELL',
+           'SSH_CLIENT',
+           'SSH_CONNECTION',
+           'SSH_TTY',
+           'TERM',
+           'USER',
+           '_',
+           envs_path_var,
+           env_var,
+           configs_path_var,
+           configs_loaded_var,]
 
 def usage( args ):
     """prints albion usage information
