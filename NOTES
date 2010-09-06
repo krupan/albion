@@ -26,3 +26,32 @@ ALBION_ENV: currently loaded env
 ALBION_CONFIGS: list of currently loaded configs
 
 will we replace .profile and shell rc files, or source something at the top of them that loads albion stuff?
+
+---
+
+How environments set up when a user logs in:
+
+http://www.linuxfromscratch.org/blfs/view/cvs/postlfs/profile.html
+
+For interactive shells, /bin/login sets up the following:
+
+$HOME, $SHELL, $PATH, $LOGNAME, and $MAIL, plus could set up $TERM
+
+/bin/login also parses /etc/login.defs, which may cause it to set $PATH, based on ENV_PATH or ENV_SUPATH (for superuser) in login.defs.
+
+These will need to be preserved when we purge by putting them in the keepers list, except PATH, because that's one that will likely be modified by configurations, and be reset when the shell starts.
+
+Then the shell will source various files based on how it is invoked.  We should invoke the shell the same way when we exec it at the end of purge, so we shouldn't have to worry too much about what exactly goes on here.
+
+For interactive non-login shells, or non-interactive shells inherit the environment of the shell that starts them, so the above still applies.
+
+However, I see lots of GDM and WINDOWID and XAUTHORITY stuff that the X and Gnome seem to add to the environemnt.  These might be important to preserve too.  I would guess KDE has a similar list of environment variables that need preserving.
+
+---
+
+starting gnome-terminal as a login shell sources your .profile a second time, PATH that is set there gets duplicates.  If my current albion profile is sourced there than the default env gets loaded twice too.
+
+starting gnome-terminal as a non-login shell fixes that.
+
+putting the albion function in the .profile and starting gnome-terminal as a non-login shell means I don't get the function.  Does moving it to the .bashrc fix that?
+
