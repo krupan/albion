@@ -82,7 +82,7 @@ def usage(args):
     print >> sys.stderr, '  list-envs     list all available environments'
     print >> sys.stderr, '  list-configs  list all available configurations'
     print >> sys.stderr, '  load          load a configuration into your ' \
-    'environment'
+    'environment; with no args, list loaded configurations'
     print >> sys.stderr, '  unload        unload a configuration from your' \
     ' environment'
     print >> sys.stderr, '  env           set up an environment; with no' \
@@ -105,6 +105,12 @@ def load(args):
     # REVISIT: should we check if config is already loaded and if so,
     # don't load it, even if version is different (assume it's a
     # conflict)?
+    if len(args) < 1:
+        for config in os.environ[configs_loaded_var].split(':'):
+            if config:
+                fields = config.split('+')
+                print >> sys.stderr, '%s %s' % (fields[0], fields[1])
+        sys.exit(0)
     if len(args) < 2:
         print >> sys.stderr, 'ERROR: not enough arguments to load'
         sys.exit(-1)
@@ -265,7 +271,7 @@ def main():
     if sys.argv[1] in commands:
         commands[sys.argv[1]](sys.argv[2:])
     else:
-        print >> sys.stderr, 'there is no "%s" command' % sys.argv[1]
+        print >> sys.stderr, 'albion: there is no "%s" command' % sys.argv[1]
         sys.exit(-1)
 
 if __name__ == "__main__":
