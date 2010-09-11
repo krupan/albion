@@ -66,28 +66,31 @@ keepers = ['COLORTERM',
            configs_loaded_var]
 
 
+def echo(string):
+    print "echo '%s';" % string
+
 def usage(args):
     """prints albion usage information
 
     output of this should *not* be evaled
 
     """
-    print >> sys.stderr, 'Usage:'
-    print >> sys.stderr, ''
-    print >> sys.stderr, '  albion command'
-    print >> sys.stderr, ''
-    print >> sys.stderr, 'Command is one of:'
-    print >> sys.stderr, ''
-    print >> sys.stderr, '  help          display this information'
-    print >> sys.stderr, '  list-envs     list all available environments'
-    print >> sys.stderr, '  list-configs  list all available configurations'
-    print >> sys.stderr, '  load          load a configuration into your ' \
-    'environment; with no args, list loaded configurations'
-    print >> sys.stderr, '  unload        unload a configuration from your' \
-    ' environment'
-    print >> sys.stderr, '  env           set up an environment; with no' \
-        ' args, list current environment'
-    print >> sys.stderr, ''
+    echo('Usage:')
+    echo('')
+    echo('  albion command')
+    echo('')
+    echo('Command is one of:')
+    echo('')
+    echo('  help          display this information')
+    echo('  list-envs     list all available environments')
+    echo('  list-configs  list all available configurations')
+    echo('  load          load a configuration into your '
+         'environment; with no args, list loaded configurations')
+    echo('  unload        unload a configuration from your'
+         ' environment')
+    echo('  env           set up an environment; with no'
+         ' args, list current environment')
+    echo('')
 
 
 def check_path(path_var):
@@ -109,10 +112,10 @@ def load(args):
         for config in os.environ[configs_loaded_var].split(':'):
             if config:
                 fields = config.split('+')
-                print >> sys.stderr, '%s %s' % (fields[0], fields[1])
+                echo('%s %s' % (fields[0], fields[1]))
         sys.exit(0)
     if len(args) < 2:
-        print >> sys.stderr, 'albion: not enough arguments to load'
+        echo('albion: not enough arguments to load')
         sys.exit(-1)
     config = args[0]
     version = args[1]
@@ -133,11 +136,11 @@ def load(args):
         found_config_version = True
         break
     if not found_config:
-        print >> sys.stderr, 'albion: config %s not found' % config
+        echo('albion: config %s not found' % config)
         sys.exit(-1)
     if not found_config_version:
-        print >> sys.stderr, 'albion: configs for %s found, but version ' \
-            '%s not found' % (config, version)
+        echo('albion: configs for %s found, but version '
+             '%s not found' % (config, version))
         sys.exit(-1)
     print '. %s;' % config_full_path
     print 'export %s="$%s:%s+%s";' % (
@@ -155,7 +158,7 @@ def find_env(env):
         env_full_path = envdir + '/' + env
         break
     if not found_env:
-        print >> sys.stderr, 'albion: env %s not found' % env
+        echo('albion: env %s not found' % env)
         sys.exit(-1)
     return env_full_path
 
@@ -183,7 +186,7 @@ def env(args):
         print >> sys.stderr, os.environ[env_var]
         sys.exit(0)
     if len(args) > 1:
-        print >> sys.stderr, 'albion: too many arguments, did you mean load?'
+        echo('albion: too many arguments, did you mean load?')
         sys.exit(-1)
     env = args[0]
     find_env(env)
@@ -198,7 +201,7 @@ def unload(args):
 
     """
     if len(args) < 1:
-        print >> sys.stderr, 'albion: not enough arguments to unload'
+        echo('albion: not enough arguments to unload')
         sys.exit(-1)
     config_to_unload = args[0]
     check_path(configs_loaded_var)
@@ -220,13 +223,13 @@ def list(paths_var, things):
 
     """
     check_path(paths_var)
-    print >> sys.stderr, ''
+    echo('')
     for path in os.environ[paths_var].split(':'):
-        print >> sys.stderr, '%s in %s:' % (things, path)
-        print >> sys.stderr, ''
+        echo('%s in %s:' % (things, path))
+        echo('')
         for item in os.listdir(path):
-            print >> sys.stderr, '  ' + item
-        print >> sys.stderr, ''
+            echo('  ') + item
+        echo('')
 
 
 def list_envs(args):
@@ -244,7 +247,7 @@ def which(args):
 
     """
     if len(args) < 1:
-        print >> sys.stderr, 'albion: not enough arguments to which'
+        echo('albion: not enough arguments to which')
         sys.exit(-1)
 
     # it could be a configuration, so search those:
@@ -253,8 +256,8 @@ def which(args):
         if not os.path.exists(configdir + '/' + args[0]):
             continue
         # found a config by that name:
-        print >> sys.stderr, 'configuration:'
-        print >> sys.stderr, '  ' + configdir + '/' + args[0]
+        echo('configuration:')
+        echo('  ' + configdir + '/') + args[0]
 
     # it could be an environment, so search those:
     check_path(envs_path_var)
@@ -262,8 +265,8 @@ def which(args):
         if not os.path.exists(envdir + '/' + args[0]):
             continue
         # found an env by that name:
-        print >> sys.stderr, 'environment:'
-        print >> sys.stderr, '  ' + envdir + '/' + args[0]
+        echo('environment:')
+        echo('  ' + envdir + '/') + args[0]
 
 
 def purgeenv():
@@ -301,7 +304,7 @@ def main():
     if sys.argv[1] in commands:
         commands[sys.argv[1]](sys.argv[2:])
     else:
-        print >> sys.stderr, 'albion: there is no "%s" command' % sys.argv[1]
+        echo('albion: there is no "%s" command' % sys.argv[1])
         sys.exit(-1)
 
 if __name__ == "__main__":
