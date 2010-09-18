@@ -25,12 +25,15 @@
 #
 ######################################################################
 
+# these paths can be anything, these are just some examples:
 export ALBION_ENVS_PATH="$HOME/.local_albion/envs:/opt/albion-stuff/envs:$HOME/work/env-manager/examples/envs"
 export ALBION_CONFIGS_PATH="$HOME/.local_albion/configs:/opt/albion-stuff/configs:$HOME/work/env-manager/examples/configs"
 export ALBION_CONFIGS_LOADED=""
 
-export PATH_TO_ALBION="/home/bryan/work/env-manager"
-# there's an environment named default, but it could be anything
+# path to the albion.py executable, this is just where my local hg
+# repo is:
+export PATH_TO_ALBION="$HOME/work/env-manager"
+# there's an environment named default, but it could be named anything
 DEFAULT_ENV="default"
 
 if [ -z "$ALBION_ENV" ]; then

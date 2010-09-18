@@ -25,6 +25,9 @@ envs_path_var = 'ALBION_ENVS_PATH'
 env_var = 'ALBION_ENV'
 configs_path_var = 'ALBION_CONFIGS_PATH'
 configs_loaded_var = 'ALBION_CONFIGS_LOADED'
+
+# these are not unset by the purge_env that happens before loading a new
+# env.
 keepers = ['COLORTERM',
            'DBUS_SESSION_BUS_ADDRESS',
            'DEFAULTS_PATH',
@@ -79,14 +82,14 @@ def usage(args):
     print >> sys.stderr, 'Command is one of:'
     print >> sys.stderr, ''
     print >> sys.stderr, '  help          display this information'
-    print >> sys.stderr, '  list-envs     list all available environments'
-    print >> sys.stderr, '  list-configs  list all available configurations'
+    print >> sys.stderr, '  env           set up an environment; with no' \
+        ' args, list current environment'
     print >> sys.stderr, '  load          load a configuration into your ' \
     'environment; with no args, list loaded configurations'
     print >> sys.stderr, '  unload        unload a configuration from your' \
     ' environment'
-    print >> sys.stderr, '  env           set up an environment; with no' \
-        ' args, list current environment'
+    print >> sys.stderr, '  list-envs     list all available environments'
+    print >> sys.stderr, '  list-configs  list all available configurations'
     print >> sys.stderr, ''
 
 
@@ -188,7 +191,7 @@ def env(args):
     env = args[0]
     find_env(env)
     print 'export %s="%s";' % (env_var, env)
-    purgeenv()
+    purge_env()
 
 
 def unload(args):
@@ -208,7 +211,7 @@ def unload(args):
             continue
         loaded_configs += loaded_config + ':'
     print 'export %s=%s' % (configs_loaded_var, loaded_configs)
-    purgeenv()
+    purge_env()
 
 
 def list(paths_var, things):
@@ -266,7 +269,7 @@ def which(args):
         print >> sys.stderr, '  ' + envdir + '/' + args[0]
 
 
-def purgeenv():
+def purge_env():
     """purges all environment variables prior to loading an environment
 
     the output of this should be evaled

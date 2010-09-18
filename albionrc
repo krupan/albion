@@ -37,7 +37,7 @@ alias alb="albion"
 if [ -z "$ALBION_ENV" ]; then
     echo "WARNING: no albion environment set"
 else
-    # this should not be called by user at a command prompt, but it's
-    # pretty important to call it here here:
+    # env_load should not be called by a user at a command prompt, but
+    # it's pretty important to call it here:
     albion env_load $ALBION_ENV
 fi
