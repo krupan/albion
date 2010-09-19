@@ -101,6 +101,13 @@ def check_path(path_var):
         sys.exit(-1)
 
 
+def list_loaded_configs():
+    for config in os.environ[configs_loaded_var].split(':'):
+        if config:
+            fields = config.split('+')
+            print >> sys.stderr, '%s %s' % (fields[0], fields[1])
+
+
 def load(args):
     """loads a configuration
 
@@ -111,10 +118,7 @@ def load(args):
     # don't load it, even if version is different (assume it's a
     # conflict)?
     if len(args) < 1:
-        for config in os.environ[configs_loaded_var].split(':'):
-            if config:
-                fields = config.split('+')
-                print >> sys.stderr, '%s %s' % (fields[0], fields[1])
+        list_loaded_configs()
         sys.exit(0)
     if len(args) < 2:
         print >> sys.stderr, 'albion: not enough arguments to load'
@@ -178,6 +182,10 @@ def env_load(args):
     print '. %s;' % env_full_path
 
 
+def list_current_env():
+    print >> sys.stderr, os.environ[env_var]
+
+
 def env(args):
     """Loads an environment (which usually loads some configs)
 
@@ -185,7 +193,7 @@ def env(args):
 
     """
     if len(args) < 1:
-        print >> sys.stderr, os.environ[env_var]
+        list_current_env()
         sys.exit(0)
     if len(args) > 1:
         print >> sys.stderr, 'albion: too many arguments, did you mean load?'
@@ -271,6 +279,22 @@ def which(args):
         print >> sys.stderr, '  ' + envdir + '/' + args[0]
 
 
+def status(args):
+    """displays currently loaded environments and packages
+
+    the output of this should *not* be evaled
+
+    """
+    print >> sys.stderr, 'current environment:'
+    print >> sys.stderr, ''
+    list_current_env()
+    print >> sys.stderr, ''
+    print >> sys.stderr, 'currently loaded configurations:'
+    print >> sys.stderr, ''
+    list_loaded_configs()
+    print >> sys.stderr, ''
+
+
 def purge_env():
     """purges all environment variables prior to loading an environment
 
@@ -292,6 +316,8 @@ commands = {'env': env,
             'lo': load,
             'loa': load,
             'load': load,
+            'st': status,
+            'status': status,
             'un': unload,
             'unl': unload,
             'unlo': unload,
