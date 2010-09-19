@@ -285,6 +285,7 @@ def purge_env():
 commands = {'env': env,
             'environment': env,
             'env_load': env_load,
+            'h': usage,
             'help': usage,
             'list-envs': list_envs,
             'list-configs': list_configs,
