@@ -90,6 +90,8 @@ def usage(args):
     ' environment'
     print >> sys.stderr, '  list-envs     list all available environments'
     print >> sys.stderr, '  list-configs  list all available configurations'
+    print >> sys.stderr, '  which         return full path for the given ' \
+        'env or config'
     print >> sys.stderr, ''
 
 
