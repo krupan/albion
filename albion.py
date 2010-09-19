@@ -239,6 +239,11 @@ def list(paths_var, things):
         print >> sys.stderr, ''
         for item in os.listdir(path):
             print >> sys.stderr, '  ' + item
+            if os.path.isdir(path + '/' + item):
+                print >> sys.stderr, '  ',
+                for version in os.listdir(path + '/' + item):
+                    print >> sys.stderr, ' %s' % version,
+                print >> sys.stderr, ''
         print >> sys.stderr, ''
 
 
