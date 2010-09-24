@@ -36,3 +36,11 @@
    list is long.
 
 * bash completion for envs and configs
+
+* install script that asks you where to put albion (suggests default)
+   and then customizes and inserts the contents of albion_profile at
+   the top of your .profile, and the contents of albionrc at the
+   bottom of your .bashrc.  Have an uninstall also that restores your
+   old .profile and .bashrc.
+
+* convert these to issues on bitbucket.
