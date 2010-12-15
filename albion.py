@@ -90,6 +90,7 @@ def usage(args):
     ' environment'
     print >> sys.stderr, '  list-envs     list all available environments'
     print >> sys.stderr, '  list-configs  list all available configurations'
+    print >> sys.stderr, '  status        displays current env and loaded configs'
     print >> sys.stderr, '  which         return full path for the given ' \
         'env or config'
     print >> sys.stderr, ''
@@ -287,7 +288,7 @@ def which(args):
 
 
 def status(args):
-    """displays currently loaded environments and packages
+    """displays currently loaded environments and configurations
 
     the output of this should *not* be evaled
 
