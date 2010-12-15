@@ -83,7 +83,7 @@ def usage(args):
     print >> sys.stderr, ''
     print >> sys.stderr, '  help          display this information'
     print >> sys.stderr, '  env           set up an environment; with no' \
-        ' args, list current environment'
+        ' args, reload the current environment'
     print >> sys.stderr, '  load          load a configuration into your ' \
     'environment; with no args, list loaded configurations'
     print >> sys.stderr, '  unload        unload a configuration from your' \
@@ -194,14 +194,14 @@ def env(args):
 
     """
     if len(args) < 1:
-        list_current_env()
-        sys.exit(0)
+        env_to_load = os.environ[env_var]
+    else:
+        env_to_load = args[0]
     if len(args) > 1:
         print >> sys.stderr, 'albion: too many arguments, did you mean load?'
         sys.exit(-1)
-    env = args[0]
-    find_env(env)
-    print 'export %s="%s";' % (env_var, env)
+    find_env(env_to_load)
+    print 'export %s="%s";' % (env_var, env_to_load)
     purge_env()
 
 
