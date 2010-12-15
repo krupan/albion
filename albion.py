@@ -235,6 +235,8 @@ def list(paths_var, things):
     check_path(paths_var)
     print >> sys.stderr, ''
     for path in os.environ[paths_var].split(':'):
+        if not os.path.exists(path):
+            continue
         print >> sys.stderr, '%s in %s:' % (things, path)
         print >> sys.stderr, ''
         for item in os.listdir(path):
