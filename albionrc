@@ -29,7 +29,9 @@ if [ -z "$PATH_TO_ALBION" ]; then
 fi
 
 albion(){
+    IFS="^"
     eval $($PATH_TO_ALBION/albion.py $*)
+    unset IFS
 }
 
 alias alb="albion"
