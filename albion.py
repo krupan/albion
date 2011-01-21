@@ -69,7 +69,7 @@ keepers = ['COLORTERM',
 def echo(string):
     # use some unlikely character for the Internal Field Separator so
     # that whitespace is preserved
-    print "IFS='*'; echo '%s';" % string
+    print "IFS='^'; echo '%s';" % string
 
 def usage(args):
     """prints albion usage information
