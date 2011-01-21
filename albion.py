@@ -230,7 +230,7 @@ def list(paths_var, things):
         echo('%s in %s:' % (things, path))
         echo('')
         for item in os.listdir(path):
-            echo('  ') + item
+            echo('  %s' % item)
         echo('')
 
 
