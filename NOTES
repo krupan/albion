@@ -1,3 +1,7 @@
+# -*- org -*-
+#+STARTUP: hidestars
+#+STARTUP: indent
+
 Strive to work with any POSIX shell:
 
 http://www.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html
@@ -54,4 +58,69 @@ starting gnome-terminal as a login shell sources your .profile a second time, PA
 starting gnome-terminal as a non-login shell fixes that.
 
 putting the albion function in the .profile and starting gnome-terminal as a non-login shell means I don't get the function.  Does moving it to the .bashrc fix that?
+
+---
+
+* Here's how it works now when you start a login shell
+
+** sources .profile
+
+*** sources albion_profile
+
+**** exports ALBION_*_PATH variables
+
+**** exports PATH_TO_ALBION variable
+
+**** clears ALBION_CONFIGS_LOADED
+
+**** if ALBION_ENV is not set, exports ALBION_ENV=default
+
+*** sources .bashrc
+
+**** sources albionrc
+
+***** does albion env_load ALBION_ENV
+
+****** NOTE: add purge_env(no-exec) here?
+
+****** sources default env file
+
+******* calls albion load config
+
+******** adds config to ALBION_CONFIGS_LOADED
+
+******** sources config file
+
+********* exports environment variables, creates aliases, and so forth
+
+* Here's what happens when you type 'albion env environment-name'
+
+** export ALBION_ENV=environment-name
+
+** calls purge_env NOTE: replace this with just an exec, or better, just a call to env_load?
+
+*** unsets all environment variables except keepers (ALBION_ENV is a keeper)
+
+*** execs $SHELL and tells it to start as a login shell
+
+**** the above login shell startup happens
+
+* Problems with the above:
+
+** When you start a shell from within a shell, part of the process is repeated
+
+*** For login shells
+
+Your .profile is sourced again, which sources the env and the configs again, without a purge, so you get stuff added to your environment twice
+
+*** For non-login shells
+
+Only your .bashrc is sourced again (.profile is not sourced), which sources the env and configs again, without a purge, so you get stuff added to  your environment twice.  The difference from the above is that ALBION_CONFIGS_LOADED doesn't get cleared (that happens as a result of the .profile being sourced), so  you see the configs in there twice (which is actually more truthful than what happens when you start a login shell)
+
+** Should there always be a purge before sourcing the env, but not always an exec?
+
+You would only exect when 'alb env env-name' is called from the command-line.  Even then, you might want to set up an env inside a script, and there you would not want to exec either, so do an 'alb env --no-exec env-name'
+
+so what does the new process look like?  I inserted two NOTEs above, but I'm not sure it's that simple of a change.  It's getting late and I'm not thinking clearly enough.  Just getting all this down was a big help though.
+
 
