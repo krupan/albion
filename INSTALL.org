@@ -1,0 +1,33 @@
+* Installing
+
+Some quick notes I took while installing albion on a new system.
+
+** Global install
+
+- pick a global location to keep albion.py, albion_profile, and albionrc (they can all go in the same place)
+
+- pick a global location to keep albion configs (probably not the same place as the above files)
+
+- pick a global location to keep albion envs (not the exact same place as albion configs, but close by is usually helpful)
+
+- create a default env in the envs global location (it can just be an empty file to get started)
+
+- edit albion_profile to set ALBION_ENVS_PATH, ALBION_CONFIGS_PATH, PATH_TO_ALBION, and DEFAULT_ENV.
+
+** Local user install
+
+- remove or rename =~/.bash_profile=
+
+- add a line to source albion_profile at the *beginning* of =~/.profile=
+
+- add a line to source albionrc at the *end* of =~/.bashrc=
+
+- If you don't want your default env to be default, put this at the top of your =~/.profile=, before you source albion_profile:
+
+#+BEGIN_SRC sh
+if [ -z "$ALBION_ENV" ]; then
+    export ALBION_ENV="env-name"
+fi
+#+END_SRC
+
+where env-name is the environment you want to start with when you log in.
