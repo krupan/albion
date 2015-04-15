@@ -111,7 +111,7 @@ putting the albion function in the .profile and starting gnome-terminal as a non
 
 *** For login shells
 
-Your .profile is sourced again, which sources the env and the configs again, without a purge, so you get stuff added to your environment twice
+Your .profile is sourced again, which sources the env and the configs again, without a purge, so you get stuff added to your environment twice.
 
 *** For non-login shells
 
@@ -124,3 +124,12 @@ You would only exect when 'alb env env-name' is called from the command-line.  E
 so what does the new process look like?  I inserted two NOTEs above, but I'm not sure it's that simple of a change.  It's getting late and I'm not thinking clearly enough.  Just getting all this down was a big help though.
 
 
+* Should be able to start a process with a given environment from a script or on the command line
+
+I'm thinking this looks like:
+
+#+begin_example
+  albion env <some-env> <some-command>
+#+end_example
+
+Your current environment is not disturbed, <some-command> runs with the <some-env> environment.
