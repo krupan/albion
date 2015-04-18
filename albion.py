@@ -76,7 +76,7 @@ def echo(string):
 def usage(args):
     """prints albion usage information
 
-    output of this should *not* be evaled
+    output of this should be evaled
 
     """
     echo('Usage:')
@@ -233,7 +233,7 @@ def list(paths_var, things):
 
     things is the thing you are listing, plural
 
-    output of this should *not* be evaled
+    output of this should be evaled
 
     """
     check_path(paths_var)
@@ -266,7 +266,7 @@ def list_configs(args):
 def which(args):
     """report where a given named item comes from
 
-    the output of this should *not* be evaled
+    output of this should be evaled
 
     """
     if len(args) < 1:
@@ -295,7 +295,7 @@ def which(args):
 def status(args):
     """displays currently loaded environments and configurations
 
-    the output of this should *not* be evaled
+    output of this should be evaled
 
     """
     echo('current environment:')
@@ -317,6 +317,8 @@ def purge_env():
     for key in os.environ:
         if key not in keepers:
             print 'unset ' + key + ';'
+    # this starts bash up fresh, which takes care of sourcing
+    # ~/.profile, ~/.bash_rc, etc.:
     print 'exec ' + os.environ['SHELL'] + ' -l;'
 
 commands = {'env': env,
