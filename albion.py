@@ -85,17 +85,24 @@ def usage(args):
     echo('')
     echo('Command is one of:')
     echo('')
-    echo('  help          display this information')
-    echo('  env           set up an environment; with no'
+    echo('  help                         display this information')
+    echo('  env                          set up an environment; with no'
          ' args, reload the current environment')
-    echo('  load          load a configuration into your '
+    echo('  load                         load a configuration into your '
          'environment; with no args, list loaded configurations')
-    echo('  unload        unload a configuration from your'
+    echo('  unload                       unload a configuration from your'
          ' environment')
-    echo('  list-envs     list all available environments')
-    echo('  list-configs  list all available configurations')
-    echo('  status        displays current env and loaded configs')
-    echo('  which         return full path for the given '
+    echo('  list-envs                    list all available environments')
+    echo('  list-configs                 list all available configurations')
+    echo('  list-envs-for-completion     list all available environments, '
+         'simple space separated')
+    echo('  list-configs                 list all available configurations')
+    echo('  list-configs-for-completion  list all available configurations, '
+         'simple space separated')
+    echo('  list-versions                list all available versions for a '
+         'given config')
+    echo('  status                       displays current env and loaded configs')
+    echo('  which                        return full path for the given '
          'env or config')
 
 
@@ -255,12 +262,52 @@ def list(paths_var, things):
         echo('')
 
 
+def list_for_completion(paths_var):
+    """List available environments or configs in a simple space separated
+    list for use with shell completion.
+
+    output of this should be evaled
+
+    """
+    check_path(paths_var)
+    items = ''
+    for path in os.environ[paths_var].split(':'):
+        if not os.path.exists(path):
+            continue
+        for item in os.listdir(path):
+            items += '%s ' % item
+    echo(items)
+
+
 def list_envs(args):
     list(envs_path_var, 'environments')
 
 
 def list_configs(args):
     list(configs_path_var, 'configurations')
+
+
+def list_configs_for_completion(args):
+    list_for_completion(configs_path_var)
+
+
+def list_envs_for_completion(args):
+    list_for_completion(envs_path_var)
+
+
+def list_versions(args):
+    if len(args) < 1:
+        echo('albion: not enough arguments, please provide a config name')
+        return
+    versions = ''
+    for path in os.environ[configs_path_var].split(':'):
+        if not os.path.exists(path):
+            continue
+        for config in os.listdir(path):
+            if config == args[0] and os.path.isdir(os.path.join(path, config)):
+                for version in os.listdir(os.path.join(path, config)):
+                    versions += '%s ' % version
+    echo(versions)
 
 
 def which(args):
@@ -327,7 +374,10 @@ commands = {'env': env,
             'h': usage,
             'help': usage,
             'list-envs': list_envs,
+            'list-envs-for-completion': list_envs_for_completion,
             'list-configs': list_configs,
+            'list-configs-for-completion': list_configs_for_completion,
+            'list-versions': list_versions,
             'lo': load,
             'loa': load,
             'load': load,
