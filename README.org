@@ -1,5 +1,7 @@
 * albion
 
+UPDATE: I now highly recommend you use [[https://github.com/krupan/direnv-modules][direnv modules]] instead of albion.
+
 A UNIX/Linux environment manager that allows on-the-fly configuration of your shell environment.  Environment variables, aliases, functions, and so forth can be changed without requiring you to do the tedious log-out-and-log-back-in-again routine.  Simply type 'albion env <environment-name>' and your shell environment will be reconfigured according to the specification in your environment file.  Should work with any [[http://pubs.opengroup.org/onlinepubs/009695399/utilities/sh.html][POSIX]]y shell (bash, ksh, zsh, etc.)
 
 Albion is similar to the [[http://modules.sourceforge.net/][Environment Modules Project]], however, environment configuration files (configs) are written in standard shell language, not [[http://modules.sourceforge.net/man/modulefile.html][tcl]].  Another improvement over modules is that when unloaded, the effect of the configs is correctly undone, even if the configs have changed or been deleted after loading.  The main albion tool is written in Python, with some supporting pieces written in POSIX shell code.
